@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Identity.Client;
+using System.ComponentModel;
 
 namespace ORMS;
 
@@ -11,6 +12,7 @@ internal class Dog
 
     //Navigation properties
     public List<Toy> Toys { get; set; }
+    public List<Park> ParksVisited { get; set; }
 
     public Dog(string name, string breed, string loves)
     {
@@ -18,6 +20,6 @@ internal class Dog
         Breed = breed;
         Loves = loves;
         Toys = [];
+        ParksVisited = [];
     }
-
 }
