@@ -6,4 +6,8 @@ internal class Dog(int id, string name, string breed, string loves)
     public string Name { get; set; } = name;
     public string Breed { get; set; } = breed;
     public string Loves { get; set; } = loves;
+
+    //Navigation properties
+
+    public List<Toy> Toys { get; set; }
 }
