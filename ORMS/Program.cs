@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using ORMS;
 using ORMS.Migrations;
+using System.Runtime.Intrinsics.Arm;
 
 //var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
 //var dogs = Utils.DeserializeFromFile<List<Dog>>("./Resources/Dogs.json");
@@ -34,12 +35,12 @@ using (MyDBContext db = new())
     //}
     //db.SaveChanges();
 
-    //List parks
+    ////List parks
+    //var parkQuery = db.Parks.ToList();
+    //Console.WriteLine($"{"Park name",-20}{"Rating",-10}");
+    //Console.WriteLine(new string('=',30));
+    //parkQuery.ForEach(p => Console.WriteLine($"{p.Name,-20}{p.RatingOutOf10,-10}"));
 
-    var parkQuery = db.Parks.ToList();
-    Console.WriteLine($"{"Park name",-20}{"Rating",-10}");
-    Console.WriteLine(new string('=',30));
-    parkQuery.ForEach(p => Console.WriteLine($"{p.Name,-20}{p.RatingOutOf10,-10}"));
 
     //db.Toys.RemoveRange(db.Toys.Where(t => t.Name == "NEWTOY"));
     //db.Dogs.RemoveRange(db.Dogs.Where(t => t.Name == "MYNEWDOG"));
@@ -60,13 +61,24 @@ using (MyDBContext db = new())
     //db.SaveChanges();
 
     //List dogs and their toys
-    var dogQuery = db.Dogs.Include(d => d.Toys);
-    Console.WriteLine($"{"Dog",-20} {"Toys",-50}");
-    Console.WriteLine(new string('=', 71));
-    foreach (var dog in dogQuery)
+    //var dogQuery = db.Dogs.Include(d => d.Toys);
+    //Console.WriteLine($"{"Dog",-20} {"Toys",-50}");
+    //Console.WriteLine(new string('=', 71));
+    //foreach (var dog in dogQuery)
+    //{
+    //    string dogToys = dog.Toys.IsNullOrEmpty() ? "NULL" : string.Join(", ", dog.Toys.Select(t => t.Name));
+    //    Console.WriteLine($"{dog.Name,-20} {dogToys,-50}");
+    //}
+
+    var parkQuery = db.Parks.Include(p => p.DogParkVisits)
+                            .ThenInclude(dp => dp.Dog)
+                            .ToList();
+
+    Console.WriteLine("PARKS");
+    foreach (var park in parkQuery)
     {
-        string dogToys = dog.Toys.IsNullOrEmpty() ? "NULL" : string.Join(", ", dog.Toys.Select(t => t.Name));
-        Console.WriteLine($"{dog.Name,-20} {dogToys,-50}");
+        var dogsAttended = String.Join(", ", park.DogParkVisits.Select(dp => dp.Dog.Name));
+        Console.WriteLine($"Id: {park.Id} | Name: {park.Name} | Rating: {park.RatingOutOf10} | DogsAttended: {dogsAttended}");
     }
 
     Console.WriteLine();
