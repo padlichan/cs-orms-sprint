@@ -12,9 +12,8 @@ internal class Dog
     //Navigation properties
     public List<Toy> Toys { get; set; }
 
-    public Dog(int id, string name, string breed, string loves)
+    public Dog(string name, string breed, string loves)
     {
-        Id = id;
         Name = name;
         Breed = breed;
         Loves = loves;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ORMS;
+using ORMS.Migrations;
 
 var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
 var dogs = Utils.DeserializeFromFile<List<Dog>>("./Resources/Dogs.json");
@@ -23,11 +24,23 @@ using (MyDBContext db = new MyDBContext())
     //db.SaveChanges();
 
 
-    //List toys and the dog they belong to
-    var toyQuery = db.Toys.Include(t => t.Dog).ToList();
-    Console.WriteLine($"{"Toy",-20} {"Owner",-20}");
-    Console.WriteLine(new string('=', 41));
-    toyQuery.ForEach(toy => Console.WriteLine($"{toy.Name,-20} {toy.Dog.Name,-20}"));
+    //db.Toys.RemoveRange(db.Toys.Where(t => t.Name == "NEWTOY"));
+    //db.Dogs.RemoveRange(db.Dogs.Where(t => t.Name == "MYNEWDOG"));
+    //db.SaveChanges();
+
+    ////List toys and the dog they belong to
+    //var toyQuery = db.Toys.Include(t => t.Dog).ToList();
+    //Console.WriteLine($"{"Toy",-20} {"Owner",-20}");
+    //Console.WriteLine(new string('=', 41));
+    //toyQuery.ForEach(toy => Console.WriteLine($"{toy.Name,-20} {(toy.Dog == null? "NULL" : toy.Dog.Name),-20}"));
+    //Console.WriteLine();
+
+    //Add new dog to db and assign new toy
+    //db.Dogs.Add(new Dog("MYNEWDOG", "SOMEDOGBREED", "THINGDOGSLOVE"));
+    //db.Toys.Add(new Toy("NEWTOY", true));
+    //db.SaveChanges();
+    //db.Toys.Where(t => t.Name == "NEWTOY").First().DogId = db.Dogs.Where(d => d.Name == "MYNEWDOG").First().Id;
+    //db.SaveChanges();
 
     //List dogs and their toys
     var dogQuery = db.Dogs.Include(d => d.Toys);
@@ -38,4 +51,6 @@ using (MyDBContext db = new MyDBContext())
         string dogToys = dog.Toys.IsNullOrEmpty() ? "NULL" : string.Join(", ", dog.Toys.Select(t => t.Name));
         Console.WriteLine($"{dog.Name,-20} {dogToys,-50}");
     }
+
+    Console.WriteLine();
 }
