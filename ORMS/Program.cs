@@ -5,7 +5,7 @@ using ORMS.Migrations;
 
 var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
 var dogs = Utils.DeserializeFromFile<List<Dog>>("./Resources/Dogs.json");
-//var parks = Utils.DeserializeFromFile<List<Park>>("./Resources/Parks.json");
+var parks = Utils.DeserializeFromFile<List<Park>>("./Resources/Parks.json");
 //var dogParkVisits = Utils.DeserializeFromFile<List<DogPark>>("./Resources/DogPark.json");
 
 using (MyDBContext db = new MyDBContext())
@@ -22,7 +22,18 @@ using (MyDBContext db = new MyDBContext())
     //    db.Toys.Add(toy);
     //}
     //db.SaveChanges();
+    //foreach (var park in parks)
+    //{
+    //    db.Parks.Add(park);
+    //}
+    //db.SaveChanges();
 
+    //List parks
+
+    var parkQuery = db.Parks.ToList();
+    Console.WriteLine($"{"Park name",-20}{"Rating",-10}");
+    Console.WriteLine(new string('=',30));
+    parkQuery.ForEach(p => Console.WriteLine($"{p.Name,-20}{p.RatingOutOf10,-10}"));
 
     //db.Toys.RemoveRange(db.Toys.Where(t => t.Name == "NEWTOY"));
     //db.Dogs.RemoveRange(db.Dogs.Where(t => t.Name == "MYNEWDOG"));
