@@ -11,8 +11,8 @@ using ORMS;
 namespace ORMS.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    [Migration("20241214152824_AddDogsToysRelationShip")]
-    partial class AddDogsToysRelationShip
+    [Migration("20241214163815_NullableDogToy")]
+    partial class NullableDogToy
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

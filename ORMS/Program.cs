@@ -20,14 +20,14 @@ using (MyDBContext db = new MyDBContext())
     //{
     //    db.Toys.Add(toy);
     //}
-    //db.SaveChanges(); 
+    //db.SaveChanges();
 
 
     //List toys and the dog they belong to
-    //var toyQuery = db.Toys.Include(t => t.Dog).ToList();
-    //Console.WriteLine($"{"Toy",-20} {"Owner",-20}");
-    //Console.WriteLine(new string('=', 41));
-    //toyQuery.ForEach(toy => Console.WriteLine($"{toy.Name,-20} {toy.Dog.Name,-20}"));
+    var toyQuery = db.Toys.Include(t => t.Dog).ToList();
+    Console.WriteLine($"{"Toy",-20} {"Owner",-20}");
+    Console.WriteLine(new string('=', 41));
+    toyQuery.ForEach(toy => Console.WriteLine($"{toy.Name,-20} {toy.Dog.Name,-20}"));
 
     //List dogs and their toys
     var dogQuery = db.Dogs.Include(d => d.Toys);

@@ -1,13 +1,24 @@
-﻿namespace ORMS;
+﻿using System.ComponentModel;
 
-internal class Dog(int id, string name, string breed, string loves)
+namespace ORMS;
+
+internal class Dog
 {
-    public int Id { get; set; } = id;
-    public string Name { get; set; } = name;
-    public string Breed { get; set; } = breed;
-    public string Loves { get; set; } = loves;
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Breed { get; set; }
+    public string Loves { get; set; }
 
     //Navigation properties
-
     public List<Toy> Toys { get; set; }
+
+    public Dog(int id, string name, string breed, string loves)
+    {
+        Id = id;
+        Name = name;
+        Breed = breed;
+        Loves = loves;
+        Toys = [];
+    }
+
 }
