@@ -3,12 +3,12 @@ using Microsoft.IdentityModel.Tokens;
 using ORMS;
 using ORMS.Migrations;
 
-var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
-var dogs = Utils.DeserializeFromFile<List<Dog>>("./Resources/Dogs.json");
-var parks = Utils.DeserializeFromFile<List<Park>>("./Resources/Parks.json");
+//var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
+//var dogs = Utils.DeserializeFromFile<List<Dog>>("./Resources/Dogs.json");
+//var parks = Utils.DeserializeFromFile<List<Park>>("./Resources/Parks.json");
 //var dogParkVisits = Utils.DeserializeFromFile<List<DogPark>>("./Resources/DogPark.json");
 
-using (MyDBContext db = new MyDBContext())
+using (MyDBContext db = new())
 {
     //db.Database.EnsureDeleted();
     //db.Database.EnsureCreated();
@@ -25,6 +25,12 @@ using (MyDBContext db = new MyDBContext())
     //foreach (var park in parks)
     //{
     //    db.Parks.Add(park);
+    //}
+    //db.SaveChanges();
+
+    //foreach (var dogPark in dogParkVisits)
+    //{
+    //    db.DogParks.Add(dogPark);
     //}
     //db.SaveChanges();
 

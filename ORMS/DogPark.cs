@@ -1,6 +1,6 @@
 ﻿namespace ORMS;
 
-internal class DogParkVisits
+internal class DogPark
 {
     public int Id { get; set; }
     public int DogId { get; set; }

@@ -9,10 +9,9 @@ internal class Park(string name, int? ratingOutOf10 = null)
 
     [Range(1,10)]
     public int? RatingOutOf10{ get; set; } = ratingOutOf10;
-    public List<Dog> DogsVisited { get; set; } = [];
+    public List<DogPark> DogParkVisits { get; set; } = [];
 
 }
-
 
 
 

@@ -6,6 +6,7 @@ internal class MyDBContext : DbContext
     public DbSet<Toy> Toys { get; set; }
     public DbSet<Dog> Dogs { get; set; }
     public DbSet<Park> Parks { get; set; }
+    public DbSet<DogPark> DogParks { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

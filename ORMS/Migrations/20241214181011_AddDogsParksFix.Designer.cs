@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ORMS;
 
@@ -10,9 +11,11 @@ using ORMS;
 namespace ORMS.Migrations
 {
     [DbContext(typeof(MyDBContext))]
-    partial class MyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241214181011_AddDogsParksFix")]
+    partial class AddDogsParksFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,6 +23,21 @@ namespace ORMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DogPark", b =>
+                {
+                    b.Property<int>("DogsVisitedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ParksVisitedId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DogsVisitedId", "ParksVisitedId");
+
+                    b.HasIndex("ParksVisitedId");
+
+                    b.ToTable("DogPark");
+                });
 
             modelBuilder.Entity("ORMS.Dog", b =>
                 {
@@ -114,16 +132,31 @@ namespace ORMS.Migrations
                     b.ToTable("Toys");
                 });
 
+            modelBuilder.Entity("DogPark", b =>
+                {
+                    b.HasOne("ORMS.Dog", null)
+                        .WithMany()
+                        .HasForeignKey("DogsVisitedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ORMS.Park", null)
+                        .WithMany()
+                        .HasForeignKey("ParksVisitedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ORMS.DogPark", b =>
                 {
                     b.HasOne("ORMS.Dog", "Dog")
-                        .WithMany("DogParkVisits")
+                        .WithMany()
                         .HasForeignKey("DogId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ORMS.Park", "Park")
-                        .WithMany("DogParkVisits")
+                        .WithMany()
                         .HasForeignKey("ParkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -144,14 +177,7 @@ namespace ORMS.Migrations
 
             modelBuilder.Entity("ORMS.Dog", b =>
                 {
-                    b.Navigation("DogParkVisits");
-
                     b.Navigation("Toys");
-                });
-
-            modelBuilder.Entity("ORMS.Park", b =>
-                {
-                    b.Navigation("DogParkVisits");
                 });
 #pragma warning restore 612, 618
         }
