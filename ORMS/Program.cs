@@ -82,4 +82,12 @@ using (MyDBContext db = new())
     }
 
     Console.WriteLine();
+
+    var ownerQuery = db.Owners.ToList();
+
+    Console.WriteLine("OWNERS");
+    foreach (var owner in ownerQuery)
+    {
+        Console.WriteLine($"Id: {owner.Id} | FirstName: {owner.FirstName} | LastName: {owner.LastName}");
+    }
 }

@@ -43,7 +43,7 @@ namespace ORMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dogs");
+                    b.ToTable("Dogs", (string)null);
                 });
 
             modelBuilder.Entity("ORMS.DogPark", b =>
@@ -66,7 +66,7 @@ namespace ORMS.Migrations
 
                     b.HasIndex("ParkId");
 
-                    b.ToTable("DogParks");
+                    b.ToTable("DogParks", (string)null);
                 });
 
             modelBuilder.Entity("ORMS.Park", b =>
@@ -86,7 +86,7 @@ namespace ORMS.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Parks");
+                    b.ToTable("Parks", (string)null);
                 });
 
             modelBuilder.Entity("ORMS.Toy", b =>
@@ -111,7 +111,7 @@ namespace ORMS.Migrations
 
                     b.HasIndex("DogId");
 
-                    b.ToTable("Toys");
+                    b.ToTable("Toys", (string)null);
                 });
 
             modelBuilder.Entity("ORMS.DogPark", b =>
