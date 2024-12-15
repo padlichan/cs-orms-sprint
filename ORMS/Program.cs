@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using ORMS;
 using ORMS.Migrations;
+using System.Net.Http.Headers;
 using System.Runtime.Intrinsics.Arm;
 
 //var toys = Utils.DeserializeFromFile<List<Toy>>("./Resources/Toys.json");
@@ -70,24 +71,59 @@ using (MyDBContext db = new())
     //    Console.WriteLine($"{dog.Name,-20} {dogToys,-50}");
     //}
 
-    var parkQuery = db.Parks.Include(p => p.DogParkVisits)
-                            .ThenInclude(dp => dp.Dog)
-                            .ToList();
+    //var parkQuery = db.Parks.Include(p => p.DogParkVisits)
+    //                        .ThenInclude(dp => dp.Dog)
+    //                        .ToList();
 
-    Console.WriteLine("PARKS");
-    foreach (var park in parkQuery)
+    //Console.WriteLine("PARKS");
+    //foreach (var park in parkQuery)
+    //{
+    //    var dogsAttended = String.Join(", ", park.DogParkVisits.Select(dp => dp.Dog.Name));
+    //    Console.WriteLine($"Id: {park.Id} | Name: {park.Name} | Rating: {park.RatingOutOf10} | DogsAttended: {dogsAttended}");
+    //}
+
+    //Console.WriteLine();
+
+    //var ownerQuery = db.Owners.ToList();
+
+    //Console.WriteLine("OWNERS");
+    //foreach (var owner in ownerQuery)
+    //{
+    //    Console.WriteLine($"Id: {owner.Id} | FirstName: {owner.FirstName} | LastName: {owner.LastName}");
+    //}
+
+    //LINQ Queries
+
+    //1. Get a list of dogs that have visited "Alexandra Park"
+
+    var dogQuery = db.Dogs.Include(d => d.DogParkVisits).ThenInclude(dp => dp.Park).ToList();
+    var alexandraParkDogs = dogQuery.Where(d => d.DogParkVisits.Select(dp => dp.Park).Any(p => p.Name == "Alexandra Park"));
+    Console.WriteLine("A list of dogs that have visited \"Alexandra Park\":");
+    foreach(Dog dog in alexandraParkDogs)
     {
-        var dogsAttended = String.Join(", ", park.DogParkVisits.Select(dp => dp.Dog.Name));
-        Console.WriteLine($"Id: {park.Id} | Name: {park.Name} | Rating: {park.RatingOutOf10} | DogsAttended: {dogsAttended}");
+        Console.WriteLine($"Id: {dog.Id} | Name: {dog.Name}");
     }
 
-    Console.WriteLine();
-
-    var ownerQuery = db.Owners.ToList();
-
-    Console.WriteLine("OWNERS");
-    foreach (var owner in ownerQuery)
+    //2. Get a list of all the toys owned by all the dogs that have visited "Heaton Park"
+    var toyQuery = db.Toys.Include(t => t.Dog).ThenInclude(d => d.DogParkVisits).ThenInclude(dp => dp.Park).ToList();
+    var toysDogsHeatonPark = toyQuery.Where(t => t.Dog.DogParkVisits.Select(dp => dp.Park).Any(p => p.Name == "Heaton Park"));
+    Console.WriteLine("A list of all the toys owned by all the dogs that have visited \"Heaton Park:");
+    foreach (var toy in toysDogsHeatonPark)
     {
-        Console.WriteLine($"Id: {owner.Id} | FirstName: {owner.FirstName} | LastName: {owner.LastName}");
+        Console.WriteLine($"Id: {toy.Id} | Name: {toy.Name} | Dog: {toy.Dog.Name?? "NULL"}");
+    }
+
+    //3. Get the park that has had the most visitors
+    var parkQuery = db.Parks.Include(p => p.DogParkVisits).ToList();
+    var parkWithMostVisitors = parkQuery.OrderByDescending(p => p.DogParkVisits.Count).First();
+    Console.WriteLine("The park that has had the most visitors:");
+    Console.WriteLine($"Id: {parkWithMostVisitors.Id} | {parkWithMostVisitors.Name} | Number of visitors: {parkWithMostVisitors.DogParkVisits.Count}");
+
+    //4. Get all parks that have had no visitors.
+
+    var parksWithNoVisitors = parkQuery.Where(p => p.DogParkVisits.Count == 0);
+    foreach(Park park in parksWithNoVisitors)
+    {
+        Console.WriteLine($"Id: {park.Id} | Name: {park.Name} | Visitors: {park.DogParkVisits.Count}");
     }
 }
